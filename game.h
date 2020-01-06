@@ -14,7 +14,7 @@ class Game{
 		void Start();
 		void Change_Direction();
 		bool Lose_Check();
-		void Food_Generator();
+		void Food_Generator(int i);
 		void Move();		
 };
 #endif

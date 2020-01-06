@@ -3,7 +3,7 @@
 #include"window.h"
 #include<iostream>
 #include<windows.h>
-
+#include<ctime>
 
 Game::Game(){
 	for(int x=0; x<52; x++){
@@ -22,7 +22,8 @@ Game::Game(){
 	Data[X_head][Y_head]=3;
 	Data[X_head-1][Y_head]=3;
 	Data[X_tail][Y_tail]=3;
-	Game::Food_Generator();
+	srand(time(0));
+	Game::Food_Generator(rand()%100);
 	Game::Length=3;
 }
 
@@ -111,14 +112,17 @@ int Game::Return_Score(){
 	return (Game::Length-3)*(5-Game::Difficuly)*30;
 }
 
-void Game::Food_Generator(){
-	srand(Game::Return_Score()+Game::Length*Game::Data[Game::X_tail][Game::Y_head]);
+void Game::Food_Generator(int i){
+	srand(Game::Return_Score()+Game::Length*Game::Data[Game::X_tail][Game::Y_head]*i);
 	int x=rand()%50+1, y=rand()%30+1;
 	if (Game::Data[x][y]==0){
 		Game::Data[x][y]=-2;
 		gotoxy(x,y);
 		std::cout << '+' << std::endl;
-	} else Game::Food_Generator();
+	} else{
+		i += rand()%100*Game::Length;
+		Game::Food_Generator(i);
+	}
 }
 
 void Game::Move(){
@@ -168,7 +172,7 @@ void Game::Move(){
 				break;
 		}
 	} else{
-		Game::Food_Generator();
+		Game::Food_Generator(1);
 		Game::Length++;
 		gotoxy(63,10);
 		if (Game::Return_Score()>99)gotoxy(62,10);
